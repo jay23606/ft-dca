@@ -15,4 +15,6 @@ Still has some bugs I am working through
 
 Currently only does buys but can add sells later
 
+Would also like to add a class to support Robinhood
+
 ![Screenshot](screenshot.png)
