@@ -1,5 +1,13 @@
 # ft-dca
-Firstrade DCA bot using headless browser
+Firstrade DCA bot using headless browser (microsoft.playwright)
+
+Make sure playwright is installed using these instructions:
+
+https://playwright.dev/dotnet/docs/intro
+
+This command may also be required for the pwsh command
+
+dotnet tool install --global PowerShell
 
 Update login tag in config.xml and the symbols you would like to DCA
   
