@@ -147,7 +147,6 @@ namespace ft_dca
         }
 
         //if there is already a buy limit order than we can skip this symbol
-        //and we only place it for the day and when within a threshold 
         public async Task<bool> HasBuyLimitOrder(string symbol)
         {
             await CheckSession();
