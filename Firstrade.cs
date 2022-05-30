@@ -240,7 +240,7 @@ namespace ft_dca
                                 Console.WriteLine($"Purchase condition met:  lastPrice<=buyPrice for {symbol}: {lastPrice} <= {buyPrice}");
                                 Console.WriteLine($"Placing gtc buy limit order for {-quantity} shares of {symbol} for ${limitPrice}/share");
 
-                                if (lastPrice < 1)
+                                if (limitPrice < 1)
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "GT90");
                                 else
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.##"), "GT90");
