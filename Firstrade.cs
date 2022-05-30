@@ -28,12 +28,12 @@ namespace ft_dca
             try
             {
                 await Page.GotoAsync("https://www.firstrade.com/content/en-us/welcome");
-            await Task.Delay(500);
+                await Task.Delay(500);
 
-            await Page.FillAsync("input[name='username']", cfg["login"].GetAttribute("userName"));
-            await Page.FillAsync("input[name='password']", cfg["login"].GetAttribute("password"));
-            await Page.ClickAsync("button[id='submit']");
-            await Task.Delay(500);
+                await Page.FillAsync("input[name='username']", cfg["login"].GetAttribute("userName"));
+                await Page.FillAsync("input[name='password']", cfg["login"].GetAttribute("password"));
+                await Page.ClickAsync("button[id='submit']");
+                await Task.Delay(500);
             
                 string[] PIN = cfg["login"].GetAttribute("pin").Split(',');
                 foreach (var digit in PIN)
