@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ft-dca": {
+      "commandName": "Project",
+      "commandLineArgs": "config.xml"
+    }
+  }
+}
