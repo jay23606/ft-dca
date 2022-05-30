@@ -207,15 +207,19 @@ namespace ft_dca
                             if (lastPrice == null) break;
 
                             decimal buyPrice = limitBuyThreshold * startPrice * .01m * (100 - percentDrop);
+
+                            decimal limitPrice = startPrice * .01m * (100 - percentDrop);
+                            if (lastPrice < limitPrice) limitPrice = (decimal)lastPrice;
+
                             if (lastPrice <= buyPrice)
                             {
                                 Console.WriteLine($"Purchase condition met:  lastPrice<=buyPrice for {symbol}: {lastPrice} <= {buyPrice}");
-                                Console.WriteLine($"Placing gtc buy limit order for {-quantity} shares of {symbol} for ${lastPrice}/share");
+                                Console.WriteLine($"Placing gtc buy limit order for {-quantity} shares of {symbol} for ${limitPrice}/share");
 
                                 if (lastPrice < 1)
-                                    await Order("B", symbol, -quantity, "Limit", ((decimal)lastPrice).ToString("#.####"), "GT90");
+                                    await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "GT90");
                                 else
-                                    await Order("B", symbol, -quantity, "Limit", ((decimal)lastPrice).ToString("#.##"), "GT90");
+                                    await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.##"), "GT90");
                             }
                             else Console.WriteLine($"Purchase condition NOT met:  lastPrice<=buyPrice for {symbol}: {lastPrice} <= {buyPrice}");
 
