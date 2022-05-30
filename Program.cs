@@ -23,7 +23,7 @@ namespace ft_dca
             while (true)
             {
                 await ft.RunBots();
-                await Task.Delay(29 * 1000);
+                await Task.Delay(20 * 1000);
             }
 
         }
