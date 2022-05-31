@@ -2,14 +2,14 @@
 <config>
 	<login userName="YOUR_USERNAME" password="YOUR_PASSWORD" pin="one,two,three,four" showBrowser="false" />
 	
-	<bot symbol="SNAP" startPrice="16.25">
-		<buy percentDrop="0" shares="1" />
-		<buy percentDrop="2" shares="1" />
-		<buy percentDrop="4" shares="2" />
-		<buy percentDrop="8" shares="4" />
-		<buy percentDrop="16" shares="8" />
-		<buy percentDrop="32" shares="16" />
-		<buy percentDrop="64" shares="32" />
+	<bot symbol="SNAP" startPrice="14.7">
+		<buy percentDrop="0" shares="2" />
+		<buy percentDrop="2" shares="2" />
+		<buy percentDrop="4" shares="4" />
+		<buy percentDrop="8" shares="8" />
+		<buy percentDrop="16" shares="16" />
+		<buy percentDrop="32" shares="32" />
+		<buy percentDrop="64" shares="64" />
 	</bot>
 
 	<bot symbol="SOFI" startPrice="8">

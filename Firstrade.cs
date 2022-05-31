@@ -12,6 +12,8 @@ namespace ft_dca
         readonly XmlDocument xml = new XmlDocument();
         readonly XmlElement? cfg;
 
+        Dictionary<string, decimal> lastPriceLookup = new Dictionary<string, decimal>();
+        Dictionary<string, int> quantityLookup = new Dictionary<string, int>();
         public Firstrade()
         {
             xml.Load(Environment.GetCommandLineArgs()[1]);
@@ -84,9 +86,12 @@ namespace ft_dca
             }
         }
 
+        //sometimes the table doesn't appear so we prefer dictionary
         public async Task<decimal?> GetLastPrice(string symbol)
         {
             await CheckSession();
+
+            if (lastPriceLookup.ContainsKey(symbol)) return lastPriceLookup[symbol];
 
             try
             {
@@ -96,11 +101,14 @@ namespace ft_dca
                 await Page.Locator("input[name='symbol'] >> nth=0").EvaluateAsync("e => e.blur()");
                 await Task.Delay(2000);
 
-                //this way works but is sketchy sometimes?
-                //var lastPrice = await Page.Locator("div.condition_stock_quote_table").Locator("table >> nth=0").Locator("tr >> nth=1").Locator("td >> nth=1").Locator("b").InnerHTMLAsync();
-
                 var rows = await Page.QuerySelectorAllAsync("div.condition_stock_quote_table table tbody tr");
+                if (rows.Count == 0)
+                {
+                    //if (lastPriceLookup.ContainsKey(symbol)) return lastPriceLookup[symbol];
+                    return decimal.MaxValue;
+                }
                 var cols = await rows[1].QuerySelectorAllAsync("td");
+                if (cols.Count == 0) return decimal.MaxValue;
                 var lastPrice = (await cols[1].TextContentAsync() ?? "").Trim();
                 return (lastPrice != "") ? Convert.ToDecimal(lastPrice) : null;
             }
@@ -115,13 +123,12 @@ namespace ft_dca
             return null;
         }
 
-        public async Task<int> GetShareQuantity(string symbol)
+
+        public async Task UpdateDictionaries()
         {
             await CheckSession();
-
             try
             {
-                symbol = symbol.ToUpper();
                 await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/cgi-bin/acctpositions");
                 await Task.Delay(2000);
 
@@ -131,23 +138,33 @@ namespace ft_dca
                     var cols = await row.QuerySelectorAllAsync("td");
                     //ensure first column is Symbol and second column is Quantity for this to work
                     var sym = (await cols[0].TextContentAsync() ?? "").Trim();
-                    if (sym == symbol) return Convert.ToInt32(await cols[1].TextContentAsync());
+
+                    if (quantityLookup.ContainsKey(sym)) quantityLookup[sym] = Convert.ToInt32(await cols[1].TextContentAsync());
+                    else quantityLookup.Add(sym, Convert.ToInt32(await cols[1].TextContentAsync()));
+
+                    if (lastPriceLookup.ContainsKey(sym)) lastPriceLookup[sym] = Convert.ToDecimal(await cols[8].TextContentAsync());
+                    else lastPriceLookup.Add(sym, Convert.ToDecimal(await cols[8].TextContentAsync()));
                 }
-                return 0;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetShareQuantity exception:");
+                Console.WriteLine("UpdateDictionaries exception:");
                 Console.WriteLine("\n" + ex.Message);
                 Console.WriteLine("\n" + ex.InnerException);
                 Console.WriteLine("\n" + ex.StackTrace);
                 Environment.Exit(1);
             }
-            return 0;
+        }
+
+        public async Task<int> GetShareQuantity(string symbol)
+        {
+            await CheckSession();
+            await UpdateDictionaries();
+            if (quantityLookup.ContainsKey(symbol)) return quantityLookup[symbol];
+            else return 0;
         }
 
         //if there is already a buy limit order than we can skip this symbol
-        //and we only place it for the day and when within a threshold 
         public async Task<bool> HasBuyLimitOrder(string symbol)
         {
             await CheckSession();
@@ -240,7 +257,7 @@ namespace ft_dca
                                 Console.WriteLine($"Purchase condition met:  lastPrice<=buyPrice for {symbol}: {lastPrice} <= {buyPrice}");
                                 Console.WriteLine($"Placing gtc buy limit order for {-quantity} shares of {symbol} for ${limitPrice}/share");
 
-                                if (lastPrice < 1)
+                                if (limitPrice < 1)
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "GT90");
                                 else
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.##"), "GT90");
