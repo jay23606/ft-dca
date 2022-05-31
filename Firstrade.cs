@@ -14,6 +14,9 @@ namespace ft_dca
 
         Dictionary<string, decimal> lastPriceLookup = new Dictionary<string, decimal>();
         Dictionary<string, int> quantityLookup = new Dictionary<string, int>();
+        Dictionary<string, decimal> gainLookup = new Dictionary<string, decimal>();
+        Dictionary<string, decimal> valueLookup = new Dictionary<string, decimal>();
+
         public Firstrade()
         {
             xml.Load(Environment.GetCommandLineArgs()[1]);
@@ -142,8 +145,15 @@ namespace ft_dca
                     if (quantityLookup.ContainsKey(sym)) quantityLookup[sym] = Convert.ToInt32(await cols[1].TextContentAsync());
                     else quantityLookup.Add(sym, Convert.ToInt32(await cols[1].TextContentAsync()));
 
+                    if (gainLookup.ContainsKey(sym)) gainLookup[sym] = Convert.ToDecimal(await cols[5].TextContentAsync());
+                    else gainLookup.Add(sym, Convert.ToDecimal(await cols[5].TextContentAsync()));
+
                     if (lastPriceLookup.ContainsKey(sym)) lastPriceLookup[sym] = Convert.ToDecimal(await cols[8].TextContentAsync());
                     else lastPriceLookup.Add(sym, Convert.ToDecimal(await cols[8].TextContentAsync()));
+
+                    if (valueLookup.ContainsKey(sym)) valueLookup[sym] = Convert.ToDecimal(await cols[10].TextContentAsync());
+                    else valueLookup.Add(sym, Convert.ToDecimal(await cols[10].TextContentAsync()));
+                    
                 }
             }
             catch (Exception ex)
@@ -159,7 +169,7 @@ namespace ft_dca
         public async Task<int> GetShareQuantity(string symbol)
         {
             await CheckSession();
-            await UpdateDictionaries();
+            //await UpdateDictionaries();
             if (quantityLookup.ContainsKey(symbol)) return quantityLookup[symbol];
             else return 0;
         }
@@ -225,6 +235,11 @@ namespace ft_dca
             {
                 var symbol = bot.GetAttribute("symbol");
                 decimal startPrice = Convert.ToDecimal(bot.GetAttribute("startPrice"));
+                await UpdateDictionaries();
+
+                if (gainLookup.ContainsKey(symbol))
+                    Console.WriteLine($"{symbol} total gain/loss: {gainLookup[symbol]}%, value ${valueLookup[symbol]}");
+                
 
                 //if there is not already a buy limit order for this symbol
                 if (!await HasBuyLimitOrder(symbol))
@@ -242,7 +257,7 @@ namespace ft_dca
                         quantity -= shares;
                         if (quantity < 0)
                         {
-                            Console.WriteLine($"{symbol} bot is at buy index {index}");
+                            Console.WriteLine($"{symbol} is at buy index {index}");
                             //now if we are within 1% of the limit price for this buy then we can place the order
                             var lastPrice = await GetLastPrice(symbol);
                             if (lastPrice == null) break;
@@ -269,7 +284,7 @@ namespace ft_dca
                         index++;
                     }
                 }
-                else Console.WriteLine($"{symbol} bot aleady has a buy order pending");
+                else Console.WriteLine($"{symbol} aleady has a buy order pending");
                 Console.WriteLine();
             }
         }
