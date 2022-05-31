@@ -11,8 +11,6 @@ dotnet tool install --global PowerShell
 
 Update login tag in config.xml and the symbols you would like to DCA
   
-Still has some bugs I am working through
-
 Would also like to add a class to support Robinhood
 
 ![Screenshot](screenshot.png)
