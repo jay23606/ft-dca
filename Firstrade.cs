@@ -78,6 +78,9 @@ namespace ft_dca
                 if (limitPrice != "") await Page.FillAsync("input[name='limitPrice']", limitPrice);
                 await Task.Delay(2000);
                 await Page.ClickAsync("a[name='submitOrder']");
+
+                var err = await Page.QuerySelectorAllAsync("div.inbox");
+                if (err.Count > 0) Console.WriteLine(await err[0].TextContentAsync());
             }
             catch (Exception ex)
             {
@@ -227,9 +230,10 @@ namespace ft_dca
 
         public async Task RunBots(decimal limitBuyThreshold = .99m)
         {
-            await CheckSession();
+            if (cfg == null) return;
 
-            var bots = cfg?.GetElementsByTagName("bot");
+            await CheckSession();
+            var bots = cfg.GetElementsByTagName("bot");
             if (bots == null) return;
             foreach(XmlElement bot in bots)
             {
@@ -238,8 +242,28 @@ namespace ft_dca
                 await UpdateDictionaries();
 
                 if (gainLookup.ContainsKey(symbol))
+                {
                     Console.WriteLine($"{symbol} total gain/loss: {gainLookup[symbol]}%, value ${valueLookup[symbol]}");
-                
+
+                    if (bot.HasAttribute("percentTakeProfit"))
+                    {
+                        decimal percentTakeProfit = Convert.ToDecimal(bot.GetAttribute("percentTakeProfit"));
+
+                        if (gainLookup[symbol]>= percentTakeProfit)
+                        {
+                            int shares = quantityLookup[symbol];
+                            if (shares > 1)
+                            {
+                                Console.WriteLine($"Total gain is greater than {percentTakeProfit}%, selling {shares - 1} shares at market price");
+                                var lastPrice = lastPriceLookup[symbol];
+                                if (lastPrice > 1) 
+                                    await Order("S", symbol, shares - 1, "Limit", lastPrice.ToString("#.##"), "Day+EXT");
+                                else 
+                                    await Order("S", symbol, shares - 1, "Limit", lastPrice.ToString("#.####"), "Day+EXT");
+                            }
+                        }
+                    }
+                }
 
                 //if there is not already a buy limit order for this symbol
                 if (!await HasBuyLimitOrder(symbol))
@@ -273,9 +297,9 @@ namespace ft_dca
                                 Console.WriteLine($"Placing gtc buy limit order for {-quantity} shares of {symbol} for ${limitPrice}/share");
 
                                 if (limitPrice < 1)
-                                    await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "GT90");
+                                    await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "Day+EXT");
                                 else
-                                    await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.##"), "GT90");
+                                    await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.##"), "Day+EXT");
                             }
                             else Console.WriteLine($"Purchase condition NOT met:  lastPrice<=buyPrice for {symbol}: {lastPrice} <= {buyPrice}");
 
