@@ -103,7 +103,8 @@ namespace ft_dca
 
             try
             {
-                await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/cgi-bin/stock_order");
+                //await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/cgi-bin/stock_order");
+                await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/content/researchtools/alerts/");
                 await Task.Delay(delayAmount);
                 await Page.FillAsync("input[name='symbol']", symbol);
                 await Page.Locator("input[name='symbol'] >> nth=0").EvaluateAsync("e => e.blur()");
