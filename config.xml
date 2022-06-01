@@ -12,7 +12,177 @@
 		<buy percentDrop="64" shares="64" />
 	</bot>
 
+	<bot symbol="MSFT" startPrice="255" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="DIS" startPrice="100" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="BHC" startPrice="9.5" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+	
+	<bot symbol="TQQQ" startPrice="28" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
 	<bot symbol="SOFI" startPrice="8" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="HOOD" startPrice="10" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="RBLX" startPrice="30" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="LYFT" startPrice="17" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="KGC" startPrice="4.5" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="AG" startPrice="8" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="RDFN" startPrice="10" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="JBLU" startPrice="10" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="X" startPrice="24" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="TWTR" startPrice="37" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="SBUX" startPrice="77" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="TGT" startPrice="150" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="WMT" startPrice="122" percentTakeProfit="6">
+		<buy percentDrop="0" shares="1" />
+		<buy percentDrop="2" shares="1" />
+		<buy percentDrop="4" shares="2" />
+		<buy percentDrop="8" shares="4" />
+		<buy percentDrop="16" shares="8" />
+		<buy percentDrop="32" shares="16" />
+		<buy percentDrop="64" shares="32" />
+	</bot>
+
+	<bot symbol="SIX" startPrice="27" percentTakeProfit="6">
 		<buy percentDrop="0" shares="1" />
 		<buy percentDrop="2" shares="1" />
 		<buy percentDrop="4" shares="2" />
