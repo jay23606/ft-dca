@@ -293,7 +293,7 @@ namespace ft_dca
                             if (shares > sharesToHold)
                             {
                                 var lastPrice = lastPriceLookup[symbol];
-                                Console.WriteLine($"--Placing SELL order for {shares - sharesToHold} shares at ${lastPrice}/share because total gain is greater than {percentTakeProfit}%");
+                                Console.WriteLine($"--Placing SELL order for {shares - sharesToHold} share(s) of {symbol} at ${lastPrice}/share because total gain is greater than {percentTakeProfit}%");
                                 if (lastPrice > 1) 
                                     await Order("S", symbol, shares - sharesToHold, "Limit", lastPrice.ToString("#.##"), "Day+EXT");
                                 else 
@@ -350,7 +350,7 @@ namespace ft_dca
                             if (lastPrice < buyPrice)
                             {
                                 Console.WriteLine($"{symbol} purchase condition met: lastPrice<buyPrice: {lastPrice}<{buyPrice}");
-                                Console.WriteLine($"--Placing BUY order for {-quantity} shares of {symbol} for ${limitPrice}/share");
+                                Console.WriteLine($"--Placing BUY order for {-quantity} share(s) of {symbol} for ${limitPrice}/share because purchase condition at buy index {index} was met");
 
                                 if (limitPrice < 1)
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "Day+EXT");
