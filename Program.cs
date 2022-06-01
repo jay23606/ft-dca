@@ -15,6 +15,7 @@ namespace ft_dca
             //var lastPrice = await ft.GetLastPrice("SNAP");
 
             ////WORKS
+            ///await UpdateDictionaries();
             //var quantity = await ft.GetShareQuantity("SNAP");
 
             ////WORKS
@@ -23,7 +24,7 @@ namespace ft_dca
             while (true)
             {
                 await ft.RunBots();
-                await Task.Delay(20 * 1000);
+                await Task.Delay(30 * 1000);
             }
 
         }

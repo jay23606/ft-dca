@@ -11,6 +11,7 @@ namespace ft_dca
 
         readonly XmlDocument xml = new XmlDocument();
         readonly XmlElement? cfg;
+        int delayAmount = 1000;
 
         Dictionary<string, decimal> lastPriceLookup = new Dictionary<string, decimal>();
         Dictionary<string, int> quantityLookup = new Dictionary<string, int>();
@@ -21,7 +22,7 @@ namespace ft_dca
         {
             xml.Load(Environment.GetCommandLineArgs()[1]);
             cfg = xml["config"];
-            bool headless = !Convert.ToBoolean(cfg["login"].GetAttribute("showBrowser"));
+            bool headless = !Convert.ToBoolean(cfg?["login"]?.GetAttribute("showBrowser") ?? "true");
             Pw = Playwright.CreateAsync().GetAwaiter().GetResult();
             Browser = Pw.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless }).GetAwaiter().GetResult();
             Page = Browser.NewPageAsync().GetAwaiter().GetResult();
@@ -29,24 +30,25 @@ namespace ft_dca
 
         public async Task Login(bool usePin = true)
         {
+            if (cfg == null) return;
             Console.WriteLine("Logging into Firstrade using credentials from <login>");
             try
             {
                 await Page.GotoAsync("https://www.firstrade.com/content/en-us/welcome");
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
 
-                await Page.FillAsync("input[name='username']", cfg["login"].GetAttribute("userName"));
-                await Page.FillAsync("input[name='password']", cfg["login"].GetAttribute("password"));
+                await Page.FillAsync("input[name='username']", cfg["login"]?.GetAttribute("userName") ?? "");
+                await Page.FillAsync("input[name='password']", cfg["login"]?.GetAttribute("password") ?? "");
                 await Page.ClickAsync("button[id='submit']");
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
 
                 if (usePin)
                 {
-                    string[] PIN = cfg["login"].GetAttribute("pin").Split(',');
+                    string[] PIN = (cfg["login"]?.GetAttribute("pin") ?? "").Split(',');
                     foreach (var digit in PIN)
                         await Page.ClickAsync($"div[id='{digit.Trim()}']");
                     await Page.ClickAsync("div[id='submit']");
-                    await Task.Delay(2000);
+                    await Task.Delay(delayAmount);
                 }
             }
             catch (Exception ex)
@@ -69,14 +71,14 @@ namespace ft_dca
             try
             {
                 await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/cgi-bin/stock_order");
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
                 await Page.SelectOptionAsync("select[name='duration']", new SelectOptionValue { Label = duration });
                 await Page.SelectOptionAsync("select[name='priceType']", new SelectOptionValue { Label = type });
                 await Page.CheckAsync($"input[value='{orderType}']");
                 await Page.FillAsync("input[name='symbol']", symbol);
                 await Page.FillAsync("input[name='quantity']", shares.ToString());
                 if (limitPrice != "") await Page.FillAsync("input[name='limitPrice']", limitPrice);
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
                 await Page.ClickAsync("a[name='submitOrder']");
 
                 var err = await Page.QuerySelectorAllAsync("div.inbox");
@@ -102,10 +104,10 @@ namespace ft_dca
             try
             {
                 await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/cgi-bin/stock_order");
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
                 await Page.FillAsync("input[name='symbol']", symbol);
                 await Page.Locator("input[name='symbol'] >> nth=0").EvaluateAsync("e => e.blur()");
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
 
                 var rows = await Page.QuerySelectorAllAsync("div.condition_stock_quote_table table tbody tr");
                 if (rows.Count == 0)
@@ -136,7 +138,7 @@ namespace ft_dca
             try
             {
                 await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/cgi-bin/acctpositions");
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
 
                 var rows = await Page.QuerySelectorAllAsync("table#positiontable tbody tr");
                 foreach (var row in rows)
@@ -186,7 +188,7 @@ namespace ft_dca
             {
                 symbol = symbol.ToUpper();
                 await Page.GotoAsync("https://invest.firstrade.com/cgi-bin/main#/cgi-bin/orderstatus");
-                await Task.Delay(2000);
+                await Task.Delay(delayAmount);
                 var rows = await Page.QuerySelectorAllAsync("table#order_status tbody tr");
                 foreach (var row in rows)
                 {
@@ -291,17 +293,17 @@ namespace ft_dca
                             decimal limitPrice = startPrice * .01m * (100 - percentDrop);
                             if (lastPrice < limitPrice) limitPrice = (decimal)lastPrice;
 
-                            if (lastPrice <= buyPrice)
+                            if (lastPrice < buyPrice)
                             {
-                                Console.WriteLine($"Purchase condition met:  lastPrice<=buyPrice for {symbol}: {lastPrice} <= {buyPrice}");
-                                Console.WriteLine($"Placing gtc buy limit order for {-quantity} shares of {symbol} for ${limitPrice}/share");
+                                Console.WriteLine($"Purchase condition met:  lastPrice<buyPrice for {symbol}: {lastPrice}<{buyPrice}");
+                                Console.WriteLine($"Placing buy limit order for {-quantity} shares of {symbol} for ${limitPrice}/share");
 
                                 if (limitPrice < 1)
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "Day+EXT");
                                 else
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.##"), "Day+EXT");
                             }
-                            else Console.WriteLine($"Purchase condition NOT met:  lastPrice<=buyPrice for {symbol}: {lastPrice} <= {buyPrice}");
+                            else Console.WriteLine($"Purchase condition NOT met:  lastPrice<buyPrice for {symbol}: {lastPrice}<{buyPrice}");
 
                             break;
                         }
