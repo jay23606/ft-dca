@@ -8,6 +8,7 @@ namespace ft_dca
         IPlaywright Pw { get; set; }
         IBrowser Browser { get; set; }
         IPage Page { get; set; }
+        IBrowserContext Context { get; set; }
 
         readonly XmlDocument xml = new XmlDocument();
         readonly XmlElement? cfg;
@@ -18,17 +19,29 @@ namespace ft_dca
         Dictionary<string, decimal> gainLookup = new Dictionary<string, decimal>();
         Dictionary<string, decimal> valueLookup = new Dictionary<string, decimal>();
 
+        bool hasStorageState { get { return File.Exists("state.json"); } }
+
         public Firstrade()
         {
             xml.Load(Environment.GetCommandLineArgs()[1]);
             cfg = xml["config"];
             bool headless = !Convert.ToBoolean(cfg?["login"]?.GetAttribute("showBrowser") ?? "true");
             Pw = Playwright.CreateAsync().GetAwaiter().GetResult();
-            Browser = Pw.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless }).GetAwaiter().GetResult();
-            Page = Browser.NewPageAsync().GetAwaiter().GetResult();
+            Browser = Pw.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless, Channel = "chrome" }).GetAwaiter().GetResult();
+
+            if (hasStorageState)
+            {
+                Context = Browser.NewContextAsync(new BrowserNewContextOptions { StorageStatePath = "state.json" }).GetAwaiter().GetResult();
+                Page = Context.NewPageAsync().GetAwaiter().GetResult();
+            }
+            else
+            {
+                Page = Browser.NewPageAsync().GetAwaiter().GetResult();
+                Context = Page.Context;
+            }
         }
 
-        public async Task Login(bool usePin = true)
+        public async Task Login()
         {
             if (cfg == null) return;
             Console.WriteLine("Logging into Firstrade using credentials from <login>");
@@ -42,7 +55,7 @@ namespace ft_dca
                 await Page.ClickAsync("button[id='submit']");
                 await Task.Delay(delayAmount);
 
-                if (usePin)
+                if (Page.Url.Contains("enter_pin"))
                 {
                     string[] PIN = (cfg["login"]?.GetAttribute("pin") ?? "").Split(',');
                     foreach (var digit in PIN)
@@ -60,6 +73,9 @@ namespace ft_dca
                 Environment.Exit(1);
             }
             Console.WriteLine("Login Successful");
+
+            await Page.Context.StorageStateAsync(new BrowserContextStorageStateOptions{Path = "state.json"});
+
             Console.WriteLine();
         }
 
@@ -226,7 +242,7 @@ namespace ft_dca
             {
                 Console.WriteLine("Session closed because you logged in from another device. Press any key to log back in.");
                 Console.ReadKey();
-                await Login(false);
+                await Login();
                 return;
             }
         }
