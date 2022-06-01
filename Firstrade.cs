@@ -12,13 +12,14 @@ namespace ft_dca
 
         readonly XmlDocument xml = new XmlDocument();
         readonly XmlElement? cfg;
-        int delayAmount = 1000;
+        int delayAmount = 2000;
 
         Dictionary<string, decimal> lastPriceLookup = new Dictionary<string, decimal>();
         Dictionary<string, int> quantityLookup = new Dictionary<string, int>();
         Dictionary<string, decimal> gainLookup = new Dictionary<string, decimal>();
         Dictionary<string, decimal> valueLookup = new Dictionary<string, decimal>();
-
+        Dictionary<string, decimal> low52Lookup = new Dictionary<string, decimal>();
+        Dictionary<string, decimal> high52Lookup = new Dictionary<string, decimal>();
         bool hasStorageState { get { return File.Exists("state.json"); } }
 
         public Firstrade()
@@ -164,18 +165,33 @@ namespace ft_dca
                     //ensure first column is Symbol and second column is Quantity for this to work
                     var sym = (await cols[0].TextContentAsync() ?? "").Trim();
 
+                    //Make sure your columns under positions are oriented like this or similar:
+                    //Symbol, Quantity, Day Change($), Gain/Loss($), Change(%), Gain/Loss(%). 52 Week Low, 52 Week High, Last, Unit Cost, Market Value, Day Low
+
+                    //Quantity
                     if (quantityLookup.ContainsKey(sym)) quantityLookup[sym] = Convert.ToInt32(await cols[1].TextContentAsync());
                     else quantityLookup.Add(sym, Convert.ToInt32(await cols[1].TextContentAsync()));
 
+                    //Gain/Loss(%)
                     if (gainLookup.ContainsKey(sym)) gainLookup[sym] = Convert.ToDecimal(await cols[5].TextContentAsync());
                     else gainLookup.Add(sym, Convert.ToDecimal(await cols[5].TextContentAsync()));
 
+                    //52 Week Low
+                    if (low52Lookup.ContainsKey(sym)) low52Lookup[sym] = Convert.ToDecimal(await cols[6].TextContentAsync());
+                    else low52Lookup.Add(sym, Convert.ToDecimal(await cols[6].TextContentAsync()));
+
+                    //52 Week High
+                    if (high52Lookup.ContainsKey(sym)) high52Lookup[sym] = Convert.ToDecimal(await cols[7].TextContentAsync());
+                    else high52Lookup.Add(sym, Convert.ToDecimal(await cols[7].TextContentAsync()));
+
+                    //Last
                     if (lastPriceLookup.ContainsKey(sym)) lastPriceLookup[sym] = Convert.ToDecimal(await cols[8].TextContentAsync());
                     else lastPriceLookup.Add(sym, Convert.ToDecimal(await cols[8].TextContentAsync()));
 
+                    //Market Value,
                     if (valueLookup.ContainsKey(sym)) valueLookup[sym] = Convert.ToDecimal(await cols[10].TextContentAsync());
                     else valueLookup.Add(sym, Convert.ToDecimal(await cols[10].TextContentAsync()));
-                    
+
                 }
             }
             catch (Exception ex)
@@ -271,16 +287,37 @@ namespace ft_dca
                         if (gainLookup[symbol]>= percentTakeProfit)
                         {
                             int shares = quantityLookup[symbol];
-                            if (shares > 1)
+
+                            var sharesToHold = (bot.HasAttribute("sharesToHold")) ? Convert.ToInt32(bot.GetAttribute("sharesToHold")) : 0;
+
+                            if (shares > sharesToHold)
                             {
-                                Console.WriteLine($"Total gain is greater than {percentTakeProfit}%, selling {shares - 1} shares at market price");
                                 var lastPrice = lastPriceLookup[symbol];
+                                Console.WriteLine($"--Placing SELL order for {shares - sharesToHold} shares at ${lastPrice}/share because total gain is greater than {percentTakeProfit}%");
                                 if (lastPrice > 1) 
-                                    await Order("S", symbol, shares - 1, "Limit", lastPrice.ToString("#.##"), "Day+EXT");
+                                    await Order("S", symbol, shares - sharesToHold, "Limit", lastPrice.ToString("#.##"), "Day+EXT");
                                 else 
-                                    await Order("S", symbol, shares - 1, "Limit", lastPrice.ToString("#.####"), "Day+EXT");
+                                    await Order("S", symbol, shares - sharesToHold, "Limit", lastPrice.ToString("#.####"), "Day+EXT");
                             }
                         }
+                    }
+
+                    if (bot.HasAttribute("percent52WeekBelow"))
+                    {
+                        var low52 = low52Lookup[symbol];
+                        var high52 = high52Lookup[symbol];
+                        var last = lastPriceLookup[symbol];
+                        var percent52Week = 100 * (last - low52) / (high52 - low52); // the percentage the last price is at within that 52 week window
+
+                        decimal percent52WeekBelow = Convert.ToDecimal(bot.GetAttribute("percent52WeekBelow"));
+
+                        if (percent52Week > percent52WeekBelow)
+                        {
+                            Console.WriteLine($"Skipping {symbol} because percent52Week>percent52WeekBelow: {percent52Week}>{percent52WeekBelow}");
+                            continue;
+                        } 
+                        else Console.WriteLine($"{symbol} 52 week percentage is {percent52Week.ToString("#.#")}%");
+
                     }
                 }
 
@@ -312,15 +349,15 @@ namespace ft_dca
 
                             if (lastPrice < buyPrice)
                             {
-                                Console.WriteLine($"Purchase condition met:  lastPrice<buyPrice for {symbol}: {lastPrice}<{buyPrice}");
-                                Console.WriteLine($"Placing buy limit order for {-quantity} shares of {symbol} for ${limitPrice}/share");
+                                Console.WriteLine($"{symbol} purchase condition met: lastPrice<buyPrice: {lastPrice}<{buyPrice}");
+                                Console.WriteLine($"--Placing BUY order for {-quantity} shares of {symbol} for ${limitPrice}/share");
 
                                 if (limitPrice < 1)
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.####"), "Day+EXT");
                                 else
                                     await Order("B", symbol, -quantity, "Limit", limitPrice.ToString("#.##"), "Day+EXT");
                             }
-                            else Console.WriteLine($"Purchase condition NOT met:  lastPrice<buyPrice for {symbol}: {lastPrice}<{buyPrice}");
+                            else Console.WriteLine($"{symbol} purchase condition NOT met: lastPrice<buyPrice: {lastPrice}<{buyPrice}");
 
                             break;
                         }
