@@ -1,5 +1,5 @@
 # ft-dca
-DCA bot using headless browser that works with Robinhood (buys/sells in dollars) or Firstrade (buys/sells in shares)
+Martingale DCA bot using headless browser that works with Robinhood (buys/sells in dollars) or Firstrade (buys/sells in shares)
 
 Simply update login tag in config.xml (or config_rh.xml for robinhood) and the symbols you would like to DCA
 
