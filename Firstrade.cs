@@ -313,7 +313,7 @@ namespace ft_dca
 
                         if (percent52Week > percent52WeekBelow)
                         {
-                            Console.WriteLine($"Skipping {symbol} because percent52Week>percent52WeekBelow: {percent52Week}>{percent52WeekBelow}");
+                            Console.WriteLine($"Skipping {symbol} because percent52Week>percent52WeekBelow: {percent52Week.ToString("#.#")}>{percent52WeekBelow}\n");
                             continue;
                         } 
                         else Console.WriteLine($"{symbol} 52 week percentage is {percent52Week.ToString("#.#")}%");
