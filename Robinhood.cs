@@ -127,7 +127,7 @@ namespace ft_dca
         {
             await Page.GotoAsync($"https://robinhood.com/stocks/{symbol}");
 
-            var price = (await Page.TextContentAsync("div#sdp-market-price")).ToString();
+            var price = (await Page.TextContentAsync("div#sdp-market-price") ?? decimal.MaxValue.ToString()).ToString();
             var trash = price.IndexOf("-$,");
             if(trash != -1) price = price.Substring(1, trash - 1);
             priceLookup.Set(symbol, price);
@@ -136,7 +136,7 @@ namespace ft_dca
             string amount = "0";
 
             //amount = (await Page.TextContentAsync("div.grid-2 div:text('Your market value') + h2")).ToString().Substring(1);
-            if (el != null) amount = (await el.TextContentAsync()).ToString().Substring(1);
+            if (el != null) amount = (await el.TextContentAsync() ?? "0").ToString().Substring(1);
             amountLookup.Set(symbol, amount);
 
             var trs = await Page.QuerySelectorAllAsync("div.grid-2 table.table tbody tr");
@@ -146,6 +146,7 @@ namespace ft_dca
                 if (tds.Count > 2)
                 {
                     var gain = await tds[2].TextContentAsync();
+                    if (gain == null) return;
                     var start = gain.IndexOf("(") + 1;
                     var end = gain.IndexOf("%)");
                     gain = gain.Substring(start, end - start);
@@ -154,11 +155,11 @@ namespace ft_dca
             }
             else gainLookup.Set(symbol, "0");
 
-            var high52 = (await Page.TextContentAsync("div#sdp-stats-52-week-high")).ToString();
+            var high52 = (await Page.TextContentAsync("div#sdp-stats-52-week-high") ?? decimal.MaxValue.ToString()).ToString();
             high52 = high52.Substring(high52.IndexOf("$") + 1);
             high52Lookup.Set(symbol, high52);
 
-            var low52 = (await Page.TextContentAsync("div#sdp-stats-52-week-low")).ToString();
+            var low52 = (await Page.TextContentAsync("div#sdp-stats-52-week-low") ?? "0").ToString();
             low52 = low52.Substring(low52.IndexOf("$") + 1);
             low52Lookup.Set(symbol, low52);
 
@@ -184,9 +185,9 @@ namespace ft_dca
         }
 
         //WaitForSelectorAsync doesn't seem to do what it needs to
-        public async Task<IElementHandle> WaitFor(string selector, int seconds = 5)
+        public async Task<IElementHandle?> WaitFor(string selector, int seconds = 5)
         {
-            IElementHandle el;
+            IElementHandle? el;
             int count = 0;
             bool elIsNull = true;
             do
@@ -208,6 +209,7 @@ namespace ft_dca
             await Page.FillAsync("input[name='dollarAmount']", amount.ToString("#.##"));
             await Page.ClickAsync("button[type='submit']");
             var btn = await WaitFor("span:text('Review Order')");
+            if (btn == null) return;
             await btn.ClickAsync();
             btn = await WaitFor("span:text('Buy')");
             if (btn != null)
@@ -236,6 +238,7 @@ namespace ft_dca
             await Page.FillAsync("input[name='dollarAmount']", amount.ToString("#.##"));
             await Page.ClickAsync("button[type='submit']");
             var btn = await WaitFor("span:text('Review Order')");
+            if (btn == null) return;
             await btn.ClickAsync();
             btn = await WaitFor("span:text('Sell')");
             if (btn != null) {

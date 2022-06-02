@@ -44,9 +44,6 @@ namespace ft_dca
                 await rh.RunBots();
                 await Task.Delay(1000 * 30);
             }
-
-            Console.ReadKey();
-
         }
     }
 }
