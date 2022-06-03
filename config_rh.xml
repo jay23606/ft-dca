@@ -2,17 +2,62 @@
 <config>
 	<login userName="YOUR_USERNAME" password="YOUR_PASSWORD" showBrowser="true" />
 
-	<bot symbol="SNAP" startPrice="14.7" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
-		<buy percentDrop="0" amount="10" />
-		<buy percentDrop="2" amount="10" />a=
-		<buy percentDrop="4" amount="20" />
-		<buy percentDrop="8" amount="40" />
-		<buy percentDrop="16" amount="80" />
-		<buy percentDrop="32" amount="160" />
-		<buy percentDrop="64" amount="320" />
+	<bot symbol="TPTX" startPrice="73.7" percentTakeProfit="6" percent52WeekBelow="66" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="1" />
+		<buy percentDrop="2" amount="1" />
+		<buy percentDrop="4" amount="2" />
+		<buy percentDrop="8" amount="4" />
+		<buy percentDrop="16" amount="8" />
+		<buy percentDrop="32" amount="16" />
+		<buy percentDrop="64" amount="32" />
 	</bot>
-
-	<bot symbol="MRNA" startPrice="137" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+	<bot symbol="SRLP" startPrice="18.95" percentTakeProfit="6" percent52WeekBelow="66" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="1" />
+		<buy percentDrop="2" amount="1" />
+		<buy percentDrop="4" amount="2" />
+		<buy percentDrop="8" amount="4" />
+		<buy percentDrop="16" amount="8" />
+		<buy percentDrop="32" amount="16" />
+		<buy percentDrop="64" amount="32" />
+	</bot>
+	<bot symbol="DHX" startPrice="7.22" percentTakeProfit="6" percent52WeekBelow="66" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="1" />
+		<buy percentDrop="2" amount="1" />
+		<buy percentDrop="4" amount="2" />
+		<buy percentDrop="8" amount="4" />
+		<buy percentDrop="16" amount="8" />
+		<buy percentDrop="32" amount="16" />
+		<buy percentDrop="64" amount="32" />
+	</bot>
+	<bot symbol="AMLX" startPrice="11.73" percentTakeProfit="6" percent52WeekBelow="66" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="1" />
+		<buy percentDrop="2" amount="1" />
+		<buy percentDrop="4" amount="2" />
+		<buy percentDrop="8" amount="4" />
+		<buy percentDrop="16" amount="8" />
+		<buy percentDrop="32" amount="16" />
+		<buy percentDrop="64" amount="32" />
+	</bot>
+	<bot symbol="KREF" startPrice="19.38" percentTakeProfit="6" percent52WeekBelow="66" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="1" />
+		<buy percentDrop="2" amount="1" />
+		<buy percentDrop="4" amount="2" />
+		<buy percentDrop="8" amount="4" />
+		<buy percentDrop="16" amount="8" />
+		<buy percentDrop="32" amount="16" />
+		<buy percentDrop="64" amount="32" />
+	</bot>
+	<bot symbol="IOVA" startPrice="7.49" percentTakeProfit="6" percent52WeekBelow="66" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="1" />
+		<buy percentDrop="2" amount="1" />
+		<buy percentDrop="4" amount="2" />
+		<buy percentDrop="8" amount="4" />
+		<buy percentDrop="16" amount="8" />
+		<buy percentDrop="32" amount="16" />
+		<buy percentDrop="64" amount="32" />
+	</bot>
+	
+	<!--<bot symbol="SNAP" startPrice="14.7" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
 		<buy percentDrop="0" amount="10" />
 		<buy percentDrop="2" amount="10" />
 		<buy percentDrop="4" amount="20" />
@@ -21,4 +66,165 @@
 		<buy percentDrop="32" amount="160" />
 		<buy percentDrop="64" amount="320" />
 	</bot>
+
+	<bot symbol="MSFT" startPrice="260" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="DIS" startPrice="110" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="SOFI" startPrice="8" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="HOOD" startPrice="10" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="RBLX" startPrice="30" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="LYFT" startPrice="17" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="KGC" startPrice="4.5" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="RDFN" startPrice="10" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="JBLU" startPrice="10" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="X" startPrice="24" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="TWTR" startPrice="37" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="SBUX" startPrice="77" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="TGT" startPrice="155" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="WMT" startPrice="125" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="SIX" startPrice="27" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>
+
+	<bot symbol="VZ" startPrice="53" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
+		<buy percentDrop="0" amount="10" />
+		<buy percentDrop="2" amount="10" />
+		<buy percentDrop="4" amount="20" />
+		<buy percentDrop="8" amount="40" />
+		<buy percentDrop="16" amount="80" />
+		<buy percentDrop="32" amount="160" />
+		<buy percentDrop="64" amount="320" />
+	</bot>-->
+
 </config>

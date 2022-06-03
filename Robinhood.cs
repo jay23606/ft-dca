@@ -106,7 +106,7 @@ namespace ft_dca
                     var partialAmount = Convert.ToDecimal(buy.GetAttribute("amount"));
                     var percentDrop = Convert.ToDecimal(buy.GetAttribute("percentDrop"));
                     amount2 -= partialAmount; //so in this case we may be subtracting in terms of startPrice dollars
-                    if (amount2 < 0)
+                    if (amount2 < -1) //we should buy at least $1 worth
                     {
                         amount2 = -amount2;
                         //to be consistent maybe we should also buy in startPrice dollars? It's an option
@@ -217,7 +217,7 @@ namespace ft_dca
             await Page.ClickAsync("button[type='submit']");
             var btn = await WaitFor("span:text('Review Order')");
             if (btn == null) return;
-            await btn.ClickAsync();
+            await btn.ClickAsync(new ElementHandleClickOptions() { Force = true });
             btn = await WaitFor("span:text('Buy')");
             if (btn != null)
             {
