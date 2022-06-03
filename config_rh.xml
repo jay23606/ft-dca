@@ -4,7 +4,7 @@
 
 	<bot symbol="SNAP" startPrice="14.7" percentTakeProfit="6" percent52WeekBelow="20" amountToHold="10" indexUsingStartPrice="true" buyUsingStartPrice="false">
 		<buy percentDrop="0" amount="10" />
-		<buy percentDrop="2" amount="10" />a=
+		<buy percentDrop="2" amount="10" />
 		<buy percentDrop="4" amount="20" />
 		<buy percentDrop="8" amount="40" />
 		<buy percentDrop="16" amount="80" />
