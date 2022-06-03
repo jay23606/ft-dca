@@ -53,6 +53,17 @@ namespace ft_dca
                 await UpdateDictionaries(symbol);
                 var price = priceLookup[symbol];
                 var amount = amountLookup[symbol];
+                var amount2 = amount; //amount2 refers to the amount as if it stayed constant at the start price  (except when useStartPriceAmounts=false)
+
+                //amount is currently relative to the current price but we want amount relative to the startPrice if useStartPriceAmounts="true"
+                bool useStartPriceAmounts = false;
+                if (bot.HasAttribute("useStartPriceAmounts") && bot.GetAttribute("useStartPriceAmounts") == "true")
+                {
+                    useStartPriceAmounts = true;
+                    decimal shareCount = amount / price;
+                    amount2 = startPrice * shareCount; 
+                }
+
                 var gain = gainLookup[symbol];
                 var low52 = low52Lookup[symbol];
                 var high52 = high52Lookup[symbol];
@@ -100,17 +111,23 @@ namespace ft_dca
                 {
                     var partialAmount = Convert.ToDecimal(buy.GetAttribute("amount"));
                     var percentDrop = Convert.ToDecimal(buy.GetAttribute("percentDrop"));
-                    amount -= partialAmount;
-                    if (amount < 0)
+                    amount2 -= partialAmount; //so in this case we may be subtracting in terms of startPrice dollars
+                    if (amount2 < 0)
                     {
+                        amount2 = -amount2;
+                        //to be consistent we should also buy in startPrice dollars I am thinking
+                        if (useStartPriceAmounts)
+                        {
+                            decimal shareCount = amount2 / price;
+                            amount2 = startPrice * shareCount;
+                        }
                         Console.WriteLine($"{symbol} is at buy index {index}");
-
                         decimal buyPrice = startPrice * .01m * (100 - percentDrop);
                         if (price < buyPrice)
                         {
                             Console.WriteLine($"{symbol} purchase condition met: price<buyPrice: {price.ToString("#.##")}<{buyPrice.ToString("#.##")}");
-                            Console.WriteLine($"--Placing BUY order for {-amount} share(s) of {symbol} for ${price.ToString("#.##")}/share because purchase condition at buy index {index} was met");
-                            await Buy(symbol, -amount);
+                            Console.WriteLine($"--Placing BUY order for ${amount2.ToString("#.##")} of {symbol} for ${price.ToString("#.##")}/share because purchase condition at buy index {index} was met");
+                            await Buy(symbol, amount2);
                         }
                         else Console.WriteLine($"{symbol} purchase condition NOT met: lastPrice<buyPrice is false: {price.ToString("#.##")}<{buyPrice.ToString("#.##")}");
                         break;
