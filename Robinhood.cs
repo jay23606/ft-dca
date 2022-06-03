@@ -56,14 +56,8 @@ namespace ft_dca
                 var amount2 = amount; //amount2 refers to the amount as if it stayed constant at the start price  (except when useStartPriceAmounts=false)
 
                 //amount is currently relative to the current price but we want amount relative to the startPrice if useStartPriceAmounts="true"
-                bool useStartPriceAmounts = false;
-                if (bot.HasAttribute("useStartPriceAmounts") && bot.GetAttribute("useStartPriceAmounts") == "true")
-                {
-                    useStartPriceAmounts = true;
-                    decimal shareCount = amount / price;
-                    amount2 = startPrice * shareCount; 
-                }
-
+                if (bot.HasAttribute("indexUsingStartPrice") && bot.GetAttribute("indexUsingStartPrice") == "true") amount2 = startPrice * (amount / price); 
+                
                 var gain = gainLookup[symbol];
                 var low52 = low52Lookup[symbol];
                 var high52 = high52Lookup[symbol];
@@ -115,12 +109,8 @@ namespace ft_dca
                     if (amount2 < 0)
                     {
                         amount2 = -amount2;
-                        //to be consistent we should also buy in startPrice dollars I am thinking
-                        if (useStartPriceAmounts)
-                        {
-                            decimal shareCount = amount2 / price;
-                            amount2 = startPrice * shareCount;
-                        }
+                        //to be consistent maybe we should also buy in startPrice dollars? It's an option
+                        if (bot.HasAttribute("buyUsingStartPrice") && bot.GetAttribute("buyUsingStartPrice") == "true") amount2 = startPrice * (amount2 / price);
                         Console.WriteLine($"{symbol} is at buy index {index}");
                         decimal buyPrice = startPrice * .01m * (100 - percentDrop);
                         if (price < buyPrice)
